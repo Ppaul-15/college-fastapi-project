@@ -59,6 +59,17 @@ async def login(data: dict):
     conn.close()
 
     return {"success": True}
+    @app.get("/users")
+def get_users():
+    conn = sqlite3.connect(DATABASE)
+    cursor = conn.cursor()
+
+    cursor.execute("SELECT * FROM users")
+    rows = cursor.fetchall()
+
+    conn.close()
+
+    return {"data": rows}
 import uvicorn
 
 if __name__ == "__main__":
