@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import sqlite3
 import os
+import uvicorn
 
 app = FastAPI()
 
@@ -37,7 +38,6 @@ def init_db():
 
 init_db()
 
-
 @app.post("/login")
 async def login(data: dict):
 
@@ -59,7 +59,10 @@ async def login(data: dict):
     conn.close()
 
     return {"success": True}
-    @app.get("/users")
+
+
+# ✅ THIS MUST BE OUTSIDE
+@app.get("/users")
 def get_users():
     conn = sqlite3.connect(DATABASE)
     cursor = conn.cursor()
@@ -70,7 +73,7 @@ def get_users():
     conn.close()
 
     return {"data": rows}
-import uvicorn
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
